@@ -1,0 +1,21 @@
+# my-frontend-project
+
+Built with the [Ontario.ca Frontend toolkit](https://github.com/ongov/ontario-frontend).
+
+## Project description
+
+An Ontario.ca Frontend project (TODO: Replace with a description of your project).
+
+## About this README.md file
+
+README files are a place to tell others about a project right in the source code repository. This one has been generated automatically for you when you set up your new project.
+
+[Make a README](https://www.makeareadme.com/) is one place to learn about creating a good README file.
+
+## Suggested information
+
+For projects meant to be deployed to Ontario.ca (this is probably why you're using the *Ontario.ca Frontend toolkit, after all), we recommend putting in at least the following information to start:
+
+* What is the purpose of the project?
+* Who should someone contact to get further information about it?
+* How would a new developer get started working on the project?
