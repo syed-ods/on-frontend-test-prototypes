@@ -4,18 +4,27 @@ Built with the [Ontario.ca Frontend toolkit](https://github.com/ongov/ontario-fr
 
 ## Project description
 
-An Ontario.ca Frontend project (TODO: Replace with a description of your project).
+This ontario-frontend project has test prototypes for the end user building applications using our toolkit.
 
-## About this README.md file
+## Test Directory and Files
+- 📂 src
+    - 📂 tests
+        - 📂 unit
+            - *packages.spec.js*
+        - 📂 integration
+            - *app.spec.js*
 
-README files are a place to tell others about a project right in the source code repository. This one has been generated automatically for you when you set up your new project.
+### Unit tests
+1. Checks if the top level redirect page exists.
+2. The main English template was generated.
+3. The main French template was generated.
+4. The sitemap template was generated.
+(The name of English and French pages need to be captured from the CLI input/prompt)
 
-[Make a README](https://www.makeareadme.com/) is one place to learn about creating a good README file.
+### Integration tests
+1. Checks if the required ontario-frontend core package is installed.
+2. If selected, the optional ES-Lint or Prettier packages were installed.
+(The selection boolean if the user opted to install the packages also also needs to be captured from the CLI input/prompt)
 
-## Suggested information
-
-For projects meant to be deployed to Ontario.ca (this is probably why you're using the *Ontario.ca Frontend toolkit, after all), we recommend putting in at least the following information to start:
-
-* What is the purpose of the project?
-* Who should someone contact to get further information about it?
-* How would a new developer get started working on the project?
+## Run the Tests
+Run the command `npm test` in terminal to run all the tests in the test directory.

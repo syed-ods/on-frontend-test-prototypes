@@ -5,8 +5,7 @@ const { expect } = require("chai");
 
 /**
  * 1. Checks if the required ontario-frontend core package is installed.
- * 2. The main English template was generated.
- * 3. The main French template was generated.
+ * 2. If selected, the optional ES-Lint or Prettier packages were installed.
  *
  * @param {string} package - Name of the node package/module.
  * @param {string} optionalPackages - Name of the optional packages like ES-lint and Prettier.
