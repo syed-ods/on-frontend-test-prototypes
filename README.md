@@ -1,4 +1,4 @@
-# my-frontend-project
+# on-frontend-test-prototypes
 
 Built with the [Ontario.ca Frontend toolkit](https://github.com/ongov/ontario-frontend).
 
