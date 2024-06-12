@@ -7,14 +7,16 @@
     "build": "rm -rf dist && eleventy",
     "debug": "rm -rf dist && DEBUG=* eleventy",
     "serve": "eleventy --serve",
-    "test": "mocha './src/tests/**/*.spec.js'"
+    "test": "mocha './src/tests/**/*.spec.js' && npx nightwatch"
   },
   "author": "TODO changeme",
   "license": "Apache 2.0",
   "devDependencies": {
     "@11ty/eleventy": "^1.0.1",
     "@ongov/ontario-frontend": "latest",
-    "mocha": "^10.4.0"
+    "chromedriver": "^125.0.3",
+    "mocha": "^10.4.0",
+    "nightwatch": "^3.6.3"
   },
   "dependencies": {
     "chai": "^4.4.1"
