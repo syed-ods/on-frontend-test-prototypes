@@ -35,7 +35,7 @@ describe("Integration: Installed packages", function () {
 
   // Testing required packages
   requiredPackages.forEach((package) => {
-    it(`The core package "${package}" should be installed`, function () {
+    it(`the core package "${package}" should be installed`, function () {
       try {
         require.resolve(package);
       } catch (e) {
@@ -47,7 +47,7 @@ describe("Integration: Installed packages", function () {
   // Testing optional packages
   for (const [package, selected] of Object.entries(optionalPackages)) {
     if (selected) {
-      it(`The package "${package}" should be installed`, function () {
+      it(`the package "${package}" should be installed`, function () {
         try {
           require.resolve(package);
         } catch (e) {

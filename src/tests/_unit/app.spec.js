@@ -1,12 +1,26 @@
 /**
  * Unit tests that check if the site and application level files were generated properly
  */
+
 const chai = require("chai");
 const fs = require("fs");
 const path = require("path");
 
 const assert = chai.assert;
 const existsSync = fs.existsSync;
+
+/**
+ * Helper function to check file existence
+ * @param {string} filePath - The path of the file to check.
+ * @param {string} description - The description of the file.
+ *
+ * @returns {boolean} TRUE/FALSE value based on if the file was found or
+ */
+function checkFileExists(filePath, description) {
+  it(description, function () {
+    assert(existsSync(filePath), `File does not exist: ${filePath}`);
+  });
+}
 
 /**
  * 1. Checks if the top level redirect page exists.
@@ -33,30 +47,28 @@ const existsSync = fs.existsSync;
 const testDir = path.resolve(__dirname, "..");
 const projectDir = path.resolve(testDir, "../..");
 
-const redirectPage = "dist/index.html";
-const enPage = "/src/en.njk";
-const frPage = "/src/fr.njk";
-const sitemap = "/src/sitemap.njk";
+// File paths
+const paths = {
+  redirectPage: path.join(projectDir, "dist/index.html"),
+  enPage: path.join(projectDir, "src/en.njk"),
+  frPage: path.join(projectDir, "src/fr.njk"),
+  sitemap: path.join(projectDir, "src/sitemap.njk"),
+};
 
 describe("Unit: App files generation", function () {
   describe("Top-level redirect page present", function () {
-    it("should generate a top-level redirect page", function () {
-      assert(existsSync(`${redirectPage}`));
-    });
+    checkFileExists(
+      paths.redirectPage,
+      "should generate a top-level redirect page"
+    );
   });
   describe("English-language template page present", function () {
-    it("should generate the main English page", function () {
-      assert(existsSync(`${projectDir}${enPage}`));
-    });
+    checkFileExists(paths.enPage, "should generate the main English page");
   });
   describe("French-language template page present", function () {
-    it("should generate the main French page", function () {
-      assert(existsSync(`${projectDir}${frPage}`));
-    });
+    checkFileExists(paths.frPage, "should generate the main French page");
   });
   describe("Sitemap present", function () {
-    it("should generate the sitemap page", function () {
-      assert(existsSync(`${projectDir}${sitemap}`));
-    });
+    checkFileExists(paths.sitemap, "should generate the sitemap page");
   });
 });
