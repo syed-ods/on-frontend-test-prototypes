@@ -1,38 +1,39 @@
 /**
  * E2E tests that check if the localization content is working, including the language toggle button.
+ * This suite ensures that the language toggles between English and French correctly.
+ *
  */
 
-/**
- * Helper function to check if element exists and is visible
- * @param {string} selector - Selector value, either a class or an id, of the element
- * @param {string} description - Description of the element
- */
-function checkElement(selector, description) {
-  browser.assert
-    .elementPresent(selector, `${description} exists`)
-    .assert.visible(selector, `${description} is visible`);
-}
+const {
+  checkElement,
+  checkElementAttributes,
+  checkElementText,
+} = require('../utils/e2e.js');
 
 /**
- * Helper function to check the language attributes and button text
+ * Combined function to check the language attributes and button text
  * @param {string} langAttr - Expected value of the HTML lang attribute
  * @param {string} buttonText - Expected text content of the language toggle button
  */
 function checkLanguageAttributes(langAttr, buttonText) {
-  browser.assert
-    .attributeEquals("html", "lang", langAttr) // Check if the HTML lang attribute matches the expected value
-    .getText(".ontario-header__language-toggler span", function (result) {
-      this.assert.equal(result.value.trim(), buttonText); // Check if the button text matches the expected value
-    });
+  checkElementAttributes(
+    'html',
+    'lang',
+    langAttr,
+    `Expected lang attribute to be ${langAttr}`
+  );
+  // Targeting the language toggle button within the ontario header
+  checkElementText('.ontario-header__language-toggler span', buttonText);
 }
 
 /**
- * 1. Checks if the html attribute of the page has the right attributes.
+ * This test will open a browser window and try to access the page on the provided URL saved in the .env file
+ * 1. It checks if the html attribute of the page has the right attributes.
  * 2. If the language button toggles.
  * 3. If the language button has the right text content.
  *
  * Variables and parameters for the e2e tests
- * @param {string} URL - The path of the link to be tested, local, staging, or prod.
+ * @param {string} E2E_URL - The saved env variable path of the link to be tested, local, staging, or prod.
  * @param {string} langButton - The clickable link/button to toggle between EN & FR.
  * @param {string} enLangAttr - The English language HTML attribute value.
  * @param {string} frLangAttr - The French language HTML attribute value.
@@ -40,38 +41,44 @@ function checkLanguageAttributes(langAttr, buttonText) {
  * @param {string} enButtonText - The language toggle button value to English.
  */
 
-module.exports = {
-  before: function (browser) {
-    // Actions to perform before the test suite runs
-    browser.maximizeWindow();
-  },
+const E2E_URL = process.env.E2E_URL;
 
-  "E2E: Localization test: English and French": function (browser) {
-    const URL = "http://localhost:8080";
-    const langButton = ".ontario-header__language-toggler"
-    const enLangAttr = "en";
-    const frLangAttr = "fr";
-    const frButtonText = "Français";
-    const enButtonText = "English";
+if (!E2E_URL) {
+  throw new Error('E2E_URL not found');
+} else {
+  module.exports = {
+    before: function (browser) {
+      // Actions to perform before the test suite runs
+      browser.maximizeWindow();
+    },
 
-    browser
-      .url(URL)
-      .waitForElementVisible("body", 2000)
+    'E2E: Localization test: English and French': function (browser) {
+      const langButton = '.ontario-header__language-toggler';
+      const enLangAttr = 'en';
+      const frLangAttr = 'fr';
+      const frButtonText = 'Français';
+      const enButtonText = 'English';
 
-      // Check if search elements exist and are visible
-      .perform(() => checkElement(langButton, "Language toggle button"));
+      browser
+        .url(E2E_URL)
+        // Check if body is visible
+        .perform(() => checkElement('body', 'Page body element'))
 
-    // Initial check for English
-    checkLanguageAttributes(enLangAttr, frButtonText); // Check English attributes and French button text
+        // Check if language toggle button exist and is visible
+        .perform(() => checkElement(langButton, 'Language toggle button'));
 
-    // Toggle to French and check
-    browser.click(langButton); // Click the language toggle button to switch to French
-    checkLanguageAttributes(frLangAttr, enButtonText); // Check French attributes and English button text
+      // Initial check for English
+      checkLanguageAttributes(enLangAttr, frButtonText); // Check English attributes and French button text
 
-    // Toggle back to English and check
-    browser.click(langButton); // Click the language toggle button to switch back to English
-    checkLanguageAttributes(enLangAttr, frButtonText); // Check English attributes and French button text
+      // Toggle to French and check
+      browser.click(langButton); // Click the language toggle button to switch to French
+      checkLanguageAttributes(frLangAttr, enButtonText); // Check French attributes and English button text
 
-    browser.end();
-  },
-};
+      // Toggle back to English and check
+      browser.click(langButton); // Click the language toggle button to switch back to English
+      checkLanguageAttributes(enLangAttr, frButtonText); // Check English attributes and French button text
+
+      browser.end();
+    },
+  };
+}

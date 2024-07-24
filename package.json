@@ -1,5 +1,5 @@
 {
-  "name": "my-frontend-project",
+  "name": "on-frontend-test-prototypes",
   "version": "0.0.1",
   "description": "Ontario.ca Frontend Project (TODO: Replace with a description of your project)",
   "main": "index.js",
@@ -7,18 +7,26 @@
     "build": "rm -rf dist && eleventy",
     "debug": "rm -rf dist && DEBUG=* eleventy",
     "serve": "eleventy --serve",
-    "test": "mocha './src/tests/**/*.spec.js' && npx nightwatch"
+    "test": "npm list mocha chai || npm install mocha chai@4.4.1 && mocha './src/tests/app/**/*.spec.js'",
+    "test:e2e": "npm list nightwatch || npm install nightwatch && npm install chromedriver && if [ -z $npm_config_url ]; then npx nightwatch; else E2E_URL=$npm_config_url npx nightwatch; fi",
+    "lint": "eslint . --ext .js",
+    "format": "prettier --write ."
   },
   "author": "TODO changeme",
   "license": "Apache 2.0",
+  "dependencies": {
+    "@ongov/ontario-frontend": "^1.0.1",
+    "chai": "^4.4.1",
+    "chromedriver": "^126.0.5",
+    "mocha": "^10.7.0",
+    "nightwatch": "^3.7.0"
+  },
   "devDependencies": {
     "@11ty/eleventy": "^1.0.1",
-    "@ongov/ontario-frontend": "latest",
-    "chromedriver": "^125.0.3",
-    "mocha": "^10.4.0",
-    "nightwatch": "^3.6.3"
-  },
-  "dependencies": {
-    "chai": "^4.4.1"
+    "@ongov/eslint-config-ontario-frontend": "^1.0.1",
+    "@ongov/prettier-config-ontario-frontend": "^1.0.1",
+    "eslint": "^8.57.0",
+    "eslint-plugin-import": "^2.29.1",
+    "prettier": "^3.3.2"
   }
 }

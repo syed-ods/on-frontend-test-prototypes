@@ -1,58 +1,62 @@
 /**
  * E2E tests that checks the functionality of the search bar.
+ * This suite ensures that the application works as expected for the end user.
  */
 
-/**
- * Helper function to check if element exists and is visible
- * @param {string} selector - Selector value, either a class or an id, of the element
- * @param {string} description - Description of the element
- */
-function checkElement(selector, description) {
-  browser.assert
-    .elementPresent(selector, `${description} exists`)
-    .assert.visible(selector, `${description} is visible`);
-}
+const { checkElement } = require('../utils/e2e.js');
 
-/**
- * 1. Checks if the search input and the search button exist.
+/** Tests the Ontario search and searchbar integration
+ * The test will open a browser window and try to access the page on the provided URL saved in the .env file
+ * 1. It checks if the search input and the search button exist.
  * 2. Types in a search term and checks if the page gets redirected to the expected URL.
  *
  * Variables and parameters for the e2e tests
- * @param {string} URL - The path of the link to be tested, local, staging, or prod.
+ * @param {string} E2E_URL - The saved env variable path of the link to be tested, local, staging, or prod.
  * @param {string} searchTerm - The search text to be typed in the search box.
- * @param {string} searchURL - The URL that the search term is supposed to be redirected to.
+ * @param {string} expectedSearchURL - The URL that the search term is supposed to be redirected to.
+ * @param {string} searchInputSelector - The selector for the search field.
+ * @param {string} expectedSearchURL - The selector for the search submit button.
  */
 
-module.exports = {
-  before: function (browser) {
-    // Actions to perform before the test suite runs
-    browser.maximizeWindow();
-  },
+const E2E_URL = process.env.E2E_URL;
 
-  "E2E: Search Bar Test": function (browser) {
-    const URL = "http://localhost:8080";
-    const searchTerm = "license";
-    const expectedSearchURL =
-      "https://www.ontario.ca/search/search-results/?query=license";
-    const searchInputSelector = "#ontario-search-input-field";
-    const searchButtonSelector = "#ontario-search-submit";
+if (!E2E_URL) {
+  throw new Error('E2E_URL not found');
+} else {
+  {
+    module.exports = {
+      before: function (browser) {
+        // Actions to perform before the test suite runs
+        browser.maximizeWindow();
+      },
 
-    browser
-      .url(URL)
-      .waitForElementVisible("body", 2000, "Body is visible")
+      'E2E: Search Bar Test': function (browser) {
+        const searchTerm = 'license';
+        const expectedSearchURL =
+          'https://www.ontario.ca/search/search-results/?query=license';
+        const searchInputSelector = '#ontario-search-input-field';
+        const searchButtonSelector = '#ontario-search-submit';
 
-      // Check if search elements exist and are visible
-      .perform(() => checkElement(searchInputSelector, "Search input field"))
-      .perform(() => checkElement(searchButtonSelector, "Search button"))
+        browser
+          .url(E2E_URL)
+          .perform(() => checkElement('body', 'Page body element'))
 
-      // Type in the search term and check redirection
-      .setValue(searchInputSelector, searchTerm)
-      .click(searchButtonSelector)
-      .waitForElementVisible("body", 2000, "Body is visible after search")
-      .assert.urlContains(
-        expectedSearchURL,
-        "Redirected to the correct search URL"
-      )
-      .end();
-  },
-};
+          // Check if search elements exist and are visible
+          .perform(() =>
+            checkElement(searchInputSelector, 'Search input field')
+          )
+          .perform(() => checkElement(searchButtonSelector, 'Search button'))
+
+          // Type in the search term and check redirection
+          .setValue(searchInputSelector, searchTerm)
+          .click(searchButtonSelector)
+          .waitForElementVisible('body', 1000, 'Body is visible after search')
+          .assert.urlContains(
+            expectedSearchURL,
+            'Redirected to the correct search URL'
+          )
+          .end();
+      },
+    };
+  }
+}
